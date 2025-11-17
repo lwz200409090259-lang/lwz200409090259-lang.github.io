@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>無限進步 - 动态莫兰迪背景</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans SC', 'Microsoft YaHei', sans-serif;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* 动态莫兰迪背景 */
+        .morandi-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(45deg, 
+                #C8B6A6,  /* 奶茶色 */
+                #B7B7A4,  /* 橄榄灰 */
+                #A8A5A5,  /* 烟灰色 */
+                #E8D5C4,  /* 奶白色 */
+                #C9ADA7,  /* 雾霾粉 */
+                #A7C4BC,  /* 雾霾绿 */
+                #D6CAD2,  /* 灰紫色 */
+                #B7B7A4   /* 重复以形成循环 */
+            );
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+        }
+
+        /* 添加粒子效果 */
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 20s linear infinite;
+        }
+
+        .particle:nth-child(1) {
+            width: 80px;
+            height: 80px;
+            left: 10%;
+            animation-delay: 0s;
+            animation-duration: 15s;
+        }
+
+        .particle:nth-child(2) {
+            width: 120px;
+            height: 120px;
+            left: 20%;
+            animation-delay: -5s;
+            animation-duration: 18s;
+        }
+
+        .particle:nth-child(3) {
+            width: 60px;
+            height: 60px;
+            left: 35%;
+            animation-delay: -3s;
+            animation-duration: 12s;
+        }
+
+        .particle:nth-child(4) {
+            width: 100px;
+            height: 100px;
+            left: 50%;
+            animation-delay: -8s;
+            animation-duration: 16s;
+        }
+
+        .particle:nth-child(5) {
+            width: 90px;
+            height: 90px;
+            left: 70%;
+            animation-delay: -10s;
+            animation-duration: 14s;
+        }
+
+        .particle:nth-child(6) {
+            width: 110px;
+            height: 110px;
+            left: 85%;
+            animation-delay: -12s;
+            animation-duration: 17s;
+        }
+
+        .particle:nth-child(7) {
+            width: 70px;
+            height: 70px;
+            left: 15%;
+            animation-delay: -7s;
+            animation-duration: 13s;
+        }
+
+        .particle:nth-child(8) {
+            width: 95px;
+            height: 95px;
+            left: 60%;
+            animation-delay: -4s;
+            animation-duration: 19s;
+        }
+
+        /* 中心文字容器 */
+        .container {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .main-title {
+            font-size: clamp(3rem, 8vw, 8rem);
+            font-weight: 900;
+            font-style: italic;
+            text-align: center;
+            letter-spacing: 0.5rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* 炫彩文字效果 */
+        .rainbow-text {
+            background: linear-gradient(
+                45deg,
+                #FF6B6B,  /* 珊瑚红 */
+                #4ECDC4,  /* 青绿色 */
+                #45B7D1,  /* 天蓝色 */
+                #96CEB4,  /* 薄荷绿 */
+                #FFEAA7,  /* 柠檬黄 */
+                #DDA0DD,  /* 紫罗兰 */
+                #FFB347,  /* 橙色 */
+                #FF6B6B   /* 重复形成循环 */
+            );
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: rainbowShift 3s ease-in-out infinite;
+            text-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
+            filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3));
+        }
+
+        /* 文字发光效果 */
+        .glow-effect {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                45deg,
+                rgba(255, 107, 107, 0.2),
+                rgba(78, 205, 196, 0.2),
+                rgba(69, 183, 209, 0.2),
+                rgba(150, 206, 180, 0.2),
+                rgba(255, 234, 167, 0.2),
+                rgba(221, 160, 221, 0.2),
+                rgba(255, 179, 71, 0.2),
+                rgba(255, 107, 107, 0.2)
+            );
+            background-size: 400% 400%;
+            filter: blur(20px);
+            z-index: -1;
+            animation: glowShift 3s ease-in-out infinite;
+        }
+
+        /* 添加装饰性元素 */
+        .decorative-elements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .decorative-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            animation: slowRotate 30s linear infinite;
+        }
+
+        .circle-1 {
+            width: 300px;
+            height: 300px;
+            top: 10%;
+            left: 10%;
+            animation-duration: 40s;
+        }
+
+        .circle-2 {
+            width: 200px;
+            height: 200px;
+            top: 60%;
+            right: 15%;
+            animation-duration: 25s;
+            animation-direction: reverse;
+        }
+
+        .circle-3 {
+            width: 150px;
+            height: 150px;
+            bottom: 20%;
+            left: 20%;
+            animation-duration: 35s;
+        }
+
+        /* 动画定义 */
+        @keyframes gradientShift {
+            0% {
+                background-position: 0% 50%;
+            }
+            25% {
+                background-position: 100% 50%;
+            }
+            50% {
+                background-position: 100% 100%;
+            }
+            75% {
+                background-position: 0% 100%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        @keyframes rainbowShift {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        @keyframes glowShift {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes slowRotate {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: clamp(2rem, 12vw, 5rem);
+                letter-spacing: 0.3rem;
+            }
+            
+            .particle {
+                display: none; /* 在移动设备上隐藏粒子以提升性能 */
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-title {
+                font-size: clamp(1.5rem, 15vw, 4rem);
+                letter-spacing: 0.2rem;
+            }
+        }
+
+        /* 添加进入动画 */
+        .main-title {
+            animation: fadeInScale 2s ease-out;
+        }
+
+        @keyframes fadeInScale {
+            0% {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 动态莫兰迪背景 -->
+    <div class="morandi-background"></div>
+    
+    <!-- 粒子效果 -->
+    <div class="particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+    
+    <!-- 装饰性元素 -->
+    <div class="decorative-elements">
+        <div class="decorative-circle circle-1"></div>
+        <div class="decorative-circle circle-2"></div>
+        <div class="decorative-circle circle-3"></div>
+    </div>
+    
+    <!-- 主容器 -->
+    <div class="container">
+        <h1 class="main-title">
+            <span class="rainbow-text">無限進步</span>
+            <div class="glow-effect"></div>
+        </h1>
+    </div>
+
+    <script>
+        // 创建更多动态效果
+        document.addEventListener('DOMContentLoaded', function() {
+            // 添加鼠标跟随效果
+            let mouseX = 0;
+            let mouseY = 0;
+            
+            document.addEventListener('mousemove', function(e) {
+                mouseX = e.clientX / window.innerWidth;
+                mouseY = e.clientY / window.innerHeight;
+                
+                // 更新背景渐变位置
+                const background = document.querySelector('.morandi-background');
+                background.style.backgroundPosition = `${50 + mouseX * 20}% ${50 + mouseY * 20}%`;
+            });
+
+            // 添加点击交互效果
+            document.addEventListener('click', function(e) {
+                createRippleEffect(e.clientX, e.clientY);
+            });
+
+            function createRippleEffect(x, y) {
+                const ripple = document.createElement('div');
+                ripple.style.position = 'fixed';
+                ripple.style.left = x + 'px';
+                ripple.style.top = y + 'px';
+                ripple.style.width = '100px';
+                ripple.style.height = '100px';
+                ripple.style.background = 'rgba(255, 255, 255, 0.3)';
+                ripple.style.borderRadius = '50%';
+                ripple.style.transform = 'translate(-50%, -50%)';
+                ripple.style.pointerEvents = 'none';
+                ripple.style.zIndex = '100';
+                ripple.style.animation = 'rippleExpand 0.6s ease-out';
+                
+                document.body.appendChild(ripple);
+                
+                setTimeout(() => {
+                    ripple.remove();
+                }, 600);
+            }
+
+            // 添加 CSS 动画
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes rippleExpand {
+                    0% {
+                        transform: translate(-50%, -50%) scale(0);
+                        opacity: 1;
+                    }
+                    100% {
+                        transform: translate(-50%, -50%) scale(4);
+                        opacity: 0;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+        });
+
+        // 动态调整粒子数量
+        function adjustParticles() {
+            const particles = document.querySelectorAll('.particle');
+            const isMobile = window.innerWidth < 768;
+            
+            particles.forEach((particle, index) => {
+                if (isMobile && index > 3) {
+                    particle.style.display = 'none';
+                } else {
+                    particle.style.display = 'block';
+                }
+            });
+        }
+
+        window.addEventListener('resize', adjustParticles);
+        adjustParticles(); // 初始调用
+    </script>
+</body>
+</html>
